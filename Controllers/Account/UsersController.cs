@@ -6,53 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sisu_olorin_api.Data;
-using sisu_olorin_api.Models.Usuarios;
+using sisu_olorin_api.Models.Profile;
 
-namespace sisu_olorin_api.Controllers
+namespace sisu_olorin_api.Controllers.Account
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuariosController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public UsuariosController(DataContext context)
+        public UsersController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/Usuarios
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Usuarios.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Usuarios/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
-            if (usuario == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return usuario;
+            return user;
         }
 
-        // PUT: api/Usuarios/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != usuario.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(usuario).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace sisu_olorin_api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsuarioExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace sisu_olorin_api.Controllers
             return NoContent();
         }
 
-        // POST: api/Usuarios
+        // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Usuarios.Add(usuario);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Usuarios/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsuario(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Usuarios.Remove(usuario);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UsuarioExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Usuarios.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

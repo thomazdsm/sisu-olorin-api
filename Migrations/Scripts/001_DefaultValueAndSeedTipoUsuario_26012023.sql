@@ -1,0 +1,10 @@
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'TipoUsuarios')
+BEGIN	
+	DELETE FROM TipoUsuarios
+	DBCC CHECKIDENT (TipoUsuarios, RESEED, 0)
+
+	INSERT INTO TipoUsuarios VALUES
+	('Administrador'),
+	('Visitante')
+END
+GO

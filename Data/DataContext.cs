@@ -1,5 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using sisu_olorin_api.Models.Usuarios;
+using Microsoft.Extensions.Hosting;
+using sisu_olorin_api.Models.Access;
+using sisu_olorin_api.Models.Product;
+using sisu_olorin_api.Models.Sale;
+using sisu_olorin_api.Models.Profile;
 
 namespace sisu_olorin_api.Data
 {
@@ -9,7 +13,19 @@ namespace sisu_olorin_api.Data
         {
         }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<TipoUsuario> TipoUsuarios { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<ProfileType> ProfileTypes { get; set; }
+        public DbSet<AccessPermission> AccessPermissions { get; set; }
+        public DbSet<Login> Logins { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductStatus> ProductStatus { get; set; }
+        public DbSet<ProductSale> ProductSales { get; set; }
+        public DbSet<SaleStatus> SaleStatus { get; set; }
+        public DbSet<SaleTracking> SaleTrackings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
     }
 }
