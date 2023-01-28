@@ -26,6 +26,12 @@ namespace sisu_olorin_api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Login>()
+                .HasOne(b => b.User)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

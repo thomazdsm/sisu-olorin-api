@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sisu_olorin_api.Data;
+using sisu_olorin_api.Models.Access;
 using sisu_olorin_api.Models.Profile;
+using sisu_olorin_api.Tools;
 
 namespace sisu_olorin_api.Controllers.Account
 {
-    [Route("api/[controller]")]
+    [Route("Account/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -21,14 +24,14 @@ namespace sisu_olorin_api.Controllers.Account
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: Account/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: Account/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -42,7 +45,7 @@ namespace sisu_olorin_api.Controllers.Account
             return user;
         }
 
-        // PUT: api/Users/5
+        // PUT: Account/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
@@ -73,18 +76,28 @@ namespace sisu_olorin_api.Controllers.Account
             return NoContent();
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(FormUser formUser)
         {
+            User user = new User();
+            user.FullName = formUser.FullName;
+            user.Email = formUser.Email;
+            user.Document = formUser.Document;            
+
+            Login login = new Login();
+            login.User = user;
+            login.UpdatedAt = DateTime.Now;
+            login.Password = Password.hashPassword(formUser.Password);
+
             _context.Users.Add(user);
+            _context.Logins.Add(login);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Users/5
+
+        // DELETE: Account/Users/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -104,5 +117,14 @@ namespace sisu_olorin_api.Controllers.Account
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
+    }
+
+    public class FormUser
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string? Document { get; set; }
+        public string Password { get; set; }
     }
 }

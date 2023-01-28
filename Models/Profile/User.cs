@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sisu_olorin_api.Models.Access;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace sisu_olorin_api.Models.Profile
@@ -20,5 +21,6 @@ namespace sisu_olorin_api.Models.Profile
         public string? AddressLine { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; } = null;
+
     }
 }
